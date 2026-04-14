@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Merenda Escolar · Análise Executiva · Sete Lagoas 2025</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Inter',sans-serif;background:#0C1C36;color:#0C1C36;font-size:14px;line-height:1.5}
+    .slide{min-height:100vh;display:flex;flex-direction:column;page-break-after:always}
+
+    /* ── SLIDE 1 ── */
+    .s1{background:linear-gradient(160deg,#0C1C36 0%,#1B4F8A 55%,#1e6bb5 100%)}
+    .s1-top{padding:44px 60px 28px}
+    .eyebrow{font-size:9px;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:#93C5FD;margin-bottom:14px}
+    .s1-title{font-size:33px;font-weight:900;letter-spacing:-1px;line-height:1.15;max-width:820px;margin-bottom:10px;color:#fff}
+    .s1-title em{color:#FCD34D;font-style:normal}
+    .s1-sub{font-size:13.5px;color:rgba(255,255,255,0.6);max-width:700px;line-height:1.65}
+    .s1-body{display:grid;grid-template-columns:1fr 1fr;flex:1;min-height:0}
+    .s1-left{padding:28px 56px 44px;display:flex;flex-direction:column;gap:18px}
+    .s1-right{padding:28px 44px 44px;background:rgba(0,0,0,0.2);display:flex;flex-direction:column}
+
+    .kpi-duo{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .kpi1{background:rgba(255,255,255,0.09);border:1px solid rgba(255,255,255,0.14);border-radius:13px;padding:18px 20px}
+    .kpi1.accent{background:rgba(252,211,77,0.11);border-color:rgba(252,211,77,0.32)}
+    .kpi1-lbl{font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-bottom:7px}
+    .kpi1-val{font-size:28px;font-weight:900;color:#fff;letter-spacing:-1px;line-height:1}
+    .kpi1-val.yellow{color:#FCD34D}
+    .kpi1-sub{font-size:11px;color:rgba(255,255,255,0.45);margin-top:5px}
+    .kpi1-badge{display:inline-block;background:rgba(252,165,165,0.22);color:#FCA5A5;font-size:10px;font-weight:800;padding:2px 10px;border-radius:100px;margin-top:7px}
+
+    .nota{background:rgba(255,255,255,0.05);border-left:3px solid #60A5FA;border-radius:0 8px 8px 0;padding:12px 15px;font-size:11.5px;color:rgba(255,255,255,0.55);line-height:1.65}
+    .nota strong{color:rgba(255,255,255,0.85)}
+
+    .chart-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,0.38);margin-bottom:12px}
+    .chart-wrap{position:relative;flex:1;min-height:260px}
+
+    /* ── SLIDE 2 ── */
+    .s2{background:#F8FAFC}
+    .s2-top{padding:44px 60px 28px;border-bottom:1px solid #E2E8F0}
+    .eyebrow2{font-size:9px;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:#16A34A;margin-bottom:14px}
+    .s2-title{font-size:33px;font-weight:900;letter-spacing:-1px;line-height:1.15;color:#0C1C36;max-width:840px}
+    .s2-title em{color:#16A34A;font-style:normal}
+    .s2-body{display:grid;grid-template-columns:1fr 1fr;flex:1;min-height:0}
+    .s2-left{padding:32px 48px 48px 60px;border-right:1px solid #E2E8F0;display:flex;flex-direction:column;gap:18px}
+    .s2-right{padding:32px 60px 48px 48px;display:flex;flex-direction:column;gap:18px}
+
+    .eco-block{border-radius:14px;padding:20px 22px}
+    .eco-block.coop{background:#FFF7ED;border-left:4px solid #EA580C}
+    .eco-block.com{background:#EFF6FF;border-left:4px solid #2563EB}
+    .eco-tag{font-size:9px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:7px}
+    .eco-tag.blue{color:#2563EB}
+    .eco-tag.orange{color:#EA580C}
+    .eco-title{font-size:12.5px;font-weight:700;color:#0C1C36;margin-bottom:11px;line-height:1.4}
+    .eco-row{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:3px}
+    .eco-lbl{font-size:11px;color:#64748B}
+    .eco-val{font-size:14px;font-weight:800;color:#0C1C36}
+    .eco-val.green{color:#15803D}
+    .eco-val.muted{color:#64748B;font-weight:600}
+    .eco-div{height:1px;background:#E2E8F0;margin:9px 0}
+    .eco-tot-lbl{font-size:11px;font-weight:600;color:#64748B}
+    .eco-tot-val{font-size:20px;font-weight:900;letter-spacing:-0.5px;color:#15803D}
+
+    .sim-box{background:linear-gradient(135deg,#0C1C36,#1B4F8A);border-radius:16px;padding:26px 28px;color:#fff}
+    .sim-eyebrow{font-size:9px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:#93C5FD;margin-bottom:8px}
+    .sim-title{font-size:15px;font-weight:800;margin-bottom:5px}
+    .sim-sub{font-size:11px;color:rgba(255,255,255,0.5);margin-bottom:20px;line-height:1.55}
+    .slider-row{display:flex;align-items:center;gap:14px;margin-bottom:18px}
+    .slider-lbl{font-size:11.5px;color:rgba(255,255,255,0.65);white-space:nowrap}
+    .slider-wrap{flex:1}
+    input[type=range]{width:100%;accent-color:#60A5FA;cursor:pointer}
+    .slider-pct{font-size:26px;font-weight:900;color:#60A5FA;letter-spacing:-1px;min-width:68px;text-align:right}
+    .sim-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .sim-res{background:rgba(255,255,255,0.08);border-radius:9px;padding:12px 14px}
+    .sim-res.hl{background:rgba(74,222,128,0.14);border:1px solid rgba(74,222,128,0.28)}
+    .sim-res-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,0.4);margin-bottom:5px}
+    .sim-res-val{font-size:18px;font-weight:900;color:#fff;letter-spacing:-0.5px}
+    .sim-res-val.green{color:#4ADE80}
+
+    .total-card{background:linear-gradient(135deg,#052e16,#15803D);border-radius:16px;padding:24px 26px;color:#fff;flex:1}
+    .total-eyebrow{font-size:9px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#86EFAC;margin-bottom:7px}
+    .total-lede{font-size:13px;font-weight:600;color:rgba(255,255,255,0.7);margin-bottom:9px;line-height:1.4}
+    .total-val{font-size:40px;font-weight:900;color:#fff;letter-spacing:-2px;line-height:1}
+    .total-sub{font-size:11px;color:rgba(255,255,255,0.5);margin-top:7px}
+    .total-bd{display:flex;gap:18px;margin-top:14px;padding-top:13px;border-top:1px solid rgba(255,255,255,0.14)}
+    .tb-lbl{font-size:9px;color:rgba(255,255,255,0.45);margin-bottom:3px}
+    .tb-val{font-size:13.5px;font-weight:800;color:#fff}
+
+    .footer{background:#0C1C36;padding:12px 60px;font-size:10px;color:rgba(255,255,255,0.3);line-height:1.8}
+
+    @media(max-width:860px){
+      .s1-body,.s2-body{grid-template-columns:1fr}
+      .s1-top,.s2-top,.s1-left,.s1-right,.s2-left,.s2-right,.footer{padding-left:20px;padding-right:20px}
+      .s1-title,.s2-title{font-size:24px}
+      .kpi-duo,.sim-grid,.total-bd{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+
+<!-- ════════════ SLIDE 1 — O PROBLEMA ════════════ -->
+<div class="slide s1">
+  <div class="s1-top">
+    <div class="eyebrow">Merenda Escolar · Sete Lagoas · Jan–Jun 2025</div>
+    <div class="s1-title">O município pagou <em>R$&nbsp;368 mil a mais</em> do que as referências de mercado indicam no 1º semestre</div>
+    <div class="s1-sub">Comparação entre contratos vigentes e tabela CEASA-MG (valor do dia). Referência: CEASA puro para fornecedores comerciais · CEASA&nbsp;+&nbsp;50% de ágio para cooperativas da agricultura familiar.</div>
+  </div>
+
+  <div class="s1-body">
+    <div class="s1-left">
+      <div class="kpi-duo">
+        <div class="kpi1">
+          <div class="kpi1-lbl">Gasto total — semestre</div>
+          <div class="kpi1-val">R$&nbsp;1,86M</div>
+          <div class="kpi1-sub">Jan–Jun 2025 · todos os hortifrutis</div>
+        </div>
+        <div class="kpi1 accent">
+          <div class="kpi1-lbl">Sobrepreço total</div>
+          <div class="kpi1-val yellow">R$&nbsp;368K</div>
+          <div class="kpi1-sub">acima das referências ajustadas</div>
+          <div class="kpi1-badge">+24,6% sobre a referência</div>
+        </div>
+      </div>
+      <div class="kpi-duo">
+        <div class="kpi1">
+          <div class="kpi1-lbl">🏬 Comerciais (Nogueira + Nuvem)</div>
+          <div class="kpi1-val" style="font-size:21px">R$&nbsp;752K gastos</div>
+          <div class="kpi1-sub">Referência CEASA: R$&nbsp;677K</div>
+          <div class="kpi1-badge">+ R$&nbsp;76K acima (+10%)</div>
+        </div>
+        <div class="kpi1">
+          <div class="kpi1-lbl">🌾 Cooperativas</div>
+          <div class="kpi1-val" style="font-size:21px">R$&nbsp;1,1M gastos</div>
+          <div class="kpi1-sub">Referência CEASA+50%: R$&nbsp;816K</div>
+          <div class="kpi1-badge">+ R$&nbsp;292K acima (+26%)</div>
+        </div>
+      </div>
+      <div class="nota">
+        <strong>Por que referências diferentes?</strong> Fornecedores comerciais competem via pregão com acesso ao atacado — referência é o CEASA puro. Cooperativas da agricultura familiar têm custo estruturalmente maior, por isso adotamos CEASA&nbsp;+&nbsp;50% como referência justa. <strong>Mesmo assim, os contratos das cooperativas superam esse patamar em R$&nbsp;292 mil no semestre.</strong>
+      </div>
+    </div>
+
+    <div class="s1-right">
+      <div class="chart-lbl">Gasto pelo contrato = referência de mercado + sobrepreço em destaque (R$)</div>
+      <div class="chart-wrap"><canvas id="chartSlide1"></canvas></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ SLIDE 2 — A SOLUÇÃO ════════════ -->
+<div class="slide s2">
+  <div class="s2-top">
+    <div class="eyebrow2">Recomendação · O que fazer agora</div>
+    <div class="s2-title">Vinculando contratos à tabela CEASA, o município pode economizar <em>mais de R$&nbsp;800 mil por ano</em></div>
+  </div>
+
+  <div class="s2-body">
+    <div class="s2-left">
+
+      <div class="eco-block coop">
+        <div class="eco-tag orange">🌾 Cooperativas — maior oportunidade</div>
+        <div class="eco-title">Renegociar à referência CEASA&nbsp;+&nbsp;50%: os contratos atuais estão acima mesmo dessa referência generosa</div>
+        <div class="eco-row">
+          <span class="eco-lbl">Gasto atual (semestre)</span>
+          <span class="eco-val">R$&nbsp;1.107.590</span>
+        </div>
+        <div class="eco-row">
+          <span class="eco-lbl">Referência CEASA+50%</span>
+          <span class="eco-val muted">R$&nbsp;815.597</span>
+        </div>
+        <div class="eco-div"></div>
+        <div class="eco-row">
+          <span class="eco-tot-lbl">Economia semestral</span>
+          <span class="eco-tot-val">R$&nbsp;291.993</span>
+        </div>
+        <div class="eco-row">
+          <span class="eco-tot-lbl">Economia anual projetada</span>
+          <span class="eco-tot-val">R$&nbsp;583.986</span>
+        </div>
+      </div>
+
+      <div class="eco-block com">
+        <div class="eco-tag blue">🏬 Comerciais — novo pregão vinculado ao CEASA</div>
+        <div class="eco-title">Estruturar edital com tabela CEASA como referência e exigir deságio mínimo — veja a simulação ao lado</div>
+        <div class="eco-row">
+          <span class="eco-lbl">Gasto atual (semestre)</span>
+          <span class="eco-val">R$&nbsp;752.286</span>
+        </div>
+        <div class="eco-row">
+          <span class="eco-lbl">Novo contrato estimado (5% deságio)</span>
+          <span class="eco-val muted" id="novoGastoBloco">R$&nbsp;643.056</span>
+        </div>
+        <div class="eco-div"></div>
+        <div class="eco-row">
+          <span class="eco-tot-lbl">Economia semestral</span>
+          <span class="eco-tot-val" id="ecoSemBloco">R$&nbsp;109.230</span>
+        </div>
+        <div class="eco-row">
+          <span class="eco-tot-lbl">Economia anual projetada</span>
+          <span class="eco-tot-val" id="ecoAnualBloco">R$&nbsp;218.461</span>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="s2-right">
+
+      <div class="sim-box">
+        <div class="sim-eyebrow">Simulador · Pregão Comercial</div>
+        <div class="sim-title">Qual deságio sobre o CEASA você quer simular?</div>
+        <div class="sim-sub">No pregão, o vencedor oferece o maior desconto sobre a tabela CEASA. Ajuste para estimar a economia (somente fornecedores comerciais).</div>
+        <div class="slider-row">
+          <span class="slider-lbl">Deságio:</span>
+          <div class="slider-wrap">
+            <input type="range" id="slider" min="0" max="20" step="0.5" value="5" oninput="atualizar()"/>
+          </div>
+          <span class="slider-pct" id="pctLabel">5,0%</span>
+        </div>
+        <div class="sim-grid">
+          <div class="sim-res">
+            <div class="sim-res-lbl">Economia semestral</div>
+            <div class="sim-res-val green" id="simSem">R$&nbsp;109.230</div>
+          </div>
+          <div class="sim-res hl">
+            <div class="sim-res-lbl">💚 Economia anual</div>
+            <div class="sim-res-val green" id="simAnual">R$&nbsp;218.461</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="total-card">
+        <div class="total-eyebrow">Potencial total de economia anual</div>
+        <div class="total-lede">Cooperativas renegociadas a CEASA+50% + Comerciais com pregão vinculado ao CEASA</div>
+        <div class="total-val" id="totalAnual">R$&nbsp;802.447</div>
+        <div class="total-sub">estimativa anual · base: dados Jan–Jun 2025 × 2</div>
+        <div class="total-bd">
+          <div>
+            <div class="tb-lbl">🌾 Cooperativas</div>
+            <div class="tb-val">R$&nbsp;583.986 / ano</div>
+          </div>
+          <div>
+            <div class="tb-lbl">🏬 Comerciais (<span id="tbPct">5,0%</span> deságio)</div>
+            <div class="tb-val" id="tbComAnual">R$&nbsp;218.461 / ano</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  Fonte: CONAB/PROHORT · CEASAMINAS-BH · Jan–Jun 2025 &nbsp;|&nbsp; Ata de Registro de Preços 2025 — Merenda Escolar · Prefeitura de Sete Lagoas-MG &nbsp;|&nbsp; Preços CEASA são de atacado (sem frete, ICMS ou margens) · Análise indicativa para fins de gestão &nbsp;|&nbsp; Elaborado em Abril/2026
+</div>
+
+<script>
+Chart.register(ChartDataLabels);
+
+const GC_COM    = 752286;
+const GREF_COM  = 676691;
+const GC_COOP   = 1107590;
+const GREF_COOP = 815597;
+
+const comItens = [
+  {qty:910.86,   pceasa:3.10},{qty:26603.52,pceasa:2.79},{qty:3845.04, pceasa:1.97},
+  {qty:4392.18,  pceasa:3.47},{qty:9539.86, pceasa:3.54},{qty:4201.49, pceasa:4.35},
+  {qty:1037.64,  pceasa:2.10},{qty:3176.83, pceasa:4.81},{qty:38964.80,pceasa:8.55},
+  {qty:41391.34, pceasa:3.62},{qty:9778.87, pceasa:2.51},
+];
+
+const fmtBRL = v => 'R$\u00a0' + Math.round(Math.abs(v)).toLocaleString('pt-BR');
+const baseFont = {family:'Inter',size:12};
+const tipStyle = {titleFont:{family:'Inter',weight:'700'},bodyFont:baseFont,padding:12,cornerRadius:8,backgroundColor:'rgba(12,28,54,0.93)'};
+
+/* ── GRÁFICO SLIDE 1 ── */
+new Chart(document.getElementById('chartSlide1'), {
+  type:'bar',
+  data:{
+    labels:['Fornecedores Comerciais\n(Nogueira + Nuvem)','Cooperativas\n(COOPERAJE + COOPERSEFA)'],
+    datasets:[
+      {
+        label:'Referência de mercado',
+        data:[GREF_COM, GREF_COOP],
+        backgroundColor:['rgba(37,99,235,0.82)','rgba(234,88,12,0.75)'],
+        borderRadius:[0,0,7,7],
+        stack:'s',
+        datalabels:{
+          display:true,anchor:'center',align:'center',
+          color:'rgba(255,255,255,0.82)',
+          font:{family:'Inter',size:11,weight:'700'},
+          formatter:(v,ctx)=>ctx.dataIndex===0?'CEASA puro\nR$ 677K':'CEASA + 50%\nR$ 816K'
+        }
+      },
+      {
+        label:'Sobrepreço — pago a mais',
+        data:[GC_COM-GREF_COM, GC_COOP-GREF_COOP],
+        backgroundColor:'rgba(220,38,38,0.90)',
+        borderRadius:[7,7,0,0],
+        stack:'s',
+        datalabels:{
+          display:true,anchor:'end',align:'end',
+          color:'#FCA5A5',
+          font:{family:'Inter',size:12,weight:'900'},
+          formatter:(v,ctx)=>'+ '+fmtBRL(v)+'\n('+(ctx.dataIndex===0?'+10%':'+26%')+')'
+        }
+      }
+    ]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:false,
+    layout:{padding:{top:52,bottom:12,left:16,right:16}},
+    plugins:{
+      legend:{
+        position:'bottom',
+        labels:{
+          color:'rgba(255,255,255,0.6)',font:baseFont,boxWidth:13,padding:18,
+          generateLabels:()=>[
+            {text:'Referência CEASA (comerciais)',      fillStyle:'rgba(37,99,235,0.82)',strokeStyle:'transparent',lineWidth:0},
+            {text:'Referência CEASA+50% (cooperativas)',fillStyle:'rgba(234,88,12,0.75)',strokeStyle:'transparent',lineWidth:0},
+            {text:'Sobrepreço — pago a mais',           fillStyle:'rgba(220,38,38,0.90)',strokeStyle:'transparent',lineWidth:0},
+          ]
+        }
+      },
+      tooltip:{
+        ...tipStyle,
+        callbacks:{
+          label:ctx=>{
+            if(ctx.datasetIndex===0){
+              const r=['CEASA puro','CEASA + 50% ágio'];
+              return ' Referência ('+r[ctx.dataIndex]+'): '+fmtBRL(ctx.parsed.y);
+            }
+            const p=[10,26][ctx.dataIndex];
+            return [' Sobrepreço: '+fmtBRL(ctx.parsed.y),' (+'+p+'% do total gasto)'];
+          }
+        }
+      }
+    },
+    scales:{
+      x:{grid:{display:false},ticks:{color:'rgba(255,255,255,0.65)',font:{...baseFont,size:12,weight:'700'}}},
+      y:{
+        stacked:true,grid:{color:'rgba(255,255,255,0.07)'},
+        ticks:{color:'rgba(255,255,255,0.4)',font:{...baseFont,size:10},
+          callback:v=>'R$'+(v>=1000000?(v/1000000).toFixed(1)+'M':(v/1000).toFixed(0)+'k')}
+      }
+    }
+  }
+});
+
+/* ── SIMULADOR ── */
+function atualizar(){
+  const d = parseFloat(document.getElementById('slider').value);
+  const pctStr = d.toFixed(1).replace('.',',')+'\u0025';
+  document.getElementById('pctLabel').textContent = pctStr;
+  document.getElementById('tbPct').textContent    = pctStr;
+
+  const novoGasto = comItens.reduce((s,i)=>s+i.qty*i.pceasa*(1-d/100),0);
+  const ecoSem    = GC_COM - novoGasto;
+  const ecoAnual  = ecoSem * 2;
+  const totalAnual= 583986 + ecoAnual;
+
+  document.getElementById('novoGastoBloco').textContent  = fmtBRL(novoGasto);
+  document.getElementById('ecoSemBloco').textContent     = fmtBRL(ecoSem);
+  document.getElementById('ecoAnualBloco').textContent   = fmtBRL(ecoAnual);
+  document.getElementById('simSem').textContent          = fmtBRL(ecoSem);
+  document.getElementById('simAnual').textContent        = fmtBRL(ecoAnual);
+  document.getElementById('totalAnual').textContent      = fmtBRL(totalAnual);
+  document.getElementById('tbComAnual').textContent      = fmtBRL(ecoAnual)+' / ano';
+}
+atualizar();
+</script>
+</body>
+</html>
